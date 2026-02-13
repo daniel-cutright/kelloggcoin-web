@@ -5,14 +5,20 @@
 <% transactions = Transaction.all %>
 
 <ol>
-
 <% transactions.each do |transaction| %>
 <% from_name = User.find_by(id: transaction.from_user_id) %>
+<% to_name = User.find_by(id: transaction.to_user_id) %>
 
-  <li> <%= transaction.amount %> from <%= transaction.from_user_id %> to <%= transaction.to_user_id %> </li>
+
+  <li>
+      <% if from_name == nil %>
+          Initial coin offering: <%= transaction.amount %> to <%= to_name.name %>
+      <% else %>
+          <%= number_with_delimiter(transaction.amount) %> from <%= from_name.name %> to <%= to_name.name %>
+      <% end %>
+  </li>
 
 <% end %>
-
 </ol>
 
 <!-- Step 2: Calculate and display the balances -->
