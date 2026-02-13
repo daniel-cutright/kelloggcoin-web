@@ -1,36 +1,53 @@
 <h1>KelloggCoin Ledger</h1>
 
 <!-- Step 1: List all transactions, starting with the ICO -->
+<h3>Transaction History</h3>
+
 <% transactions = Transaction.all %>
 
-<ol>
-<% transactions.each do |transaction| %>
-<% from_user = User.find_by(id: transaction.from_user_id) %>
-<% to_user = User.find_by(id: transaction.to_user_id) %>
-
-  <li>
-      <% if from_user == nil %>
-          Initial coin offering: <%= transaction.amount %> to <%= to_user.name %>
-      <% else %>
-          <%= transaction.amount %> from <%= from_user.name %> to <%= to_user.name %>
-      <% end %>
-  </li>
-
+<table border="1" style="width: 50%;">
+  <tr>
+    <th>From</th>
+    <th>To</th>
+    <th>Amount</th>
+  </tr>
+  <% transactions.each do |transaction| %>
+  <% from_user = User.find_by(id: transaction.from_user_id) %>
+  <% to_user = User.find_by(id: transaction.to_user_id) %>
+  <tr>
+      <td>
+        <% if from_user == nil %>
+          Initial coin offering
+        <% else %>
+          <%= from_user.name %>
+        <% end %>
+      </td>
+      <td> <%= to_user.name %> </td>
+      <td> <%= transaction.amount %> </td>
+  </tr>
 <% end %>
-</ol>
+</table>
 
 <!-- Step 2: Calculate and display the balances -->
+<h3>User Balances</h3>
+
 <% users = User.all %>
 
-<ul>
-<% users.each do |user| %>
+<table border="1" style="width: 25%;">
+  <tr>
+    <th>Name</th>
+    <th>Balance</th>
+  </tr>
+  <% users.each do |user| %>
   <% inflow = Transaction.where(to_user_id: user.id).sum(:amount) %>
   <% outflow = Transaction.where(from_user_id: user.id).sum(:amount) %>
   <% balance = inflow - outflow %>
-
-    <li> Balance for <%= user.name %>: <%= balance %> KC </li>
+  <tr>
+    <td> <%= user.name %> </td>
+    <td> <%= balance %> </td>
+  </tr>
 <% end %>
-</ul>
+</table>
 
 <!-- 
 Expected balances:
