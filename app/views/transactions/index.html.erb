@@ -5,14 +5,14 @@
 
 <ol>
 <% transactions.each do |transaction| %>
-<% from_name = User.find_by(id: transaction.from_user_id) %>
-<% to_name = User.find_by(id: transaction.to_user_id) %>
+<% from_user = User.find_by(id: transaction.from_user_id) %>
+<% to_user = User.find_by(id: transaction.to_user_id) %>
 
   <li>
-      <% if from_name == nil %>
-          Initial coin offering: <%= transaction.amount %> to <%= to_name.name %>
+      <% if from_user == nil %>
+          Initial coin offering: <%= transaction.amount %> to <%= to_user.name %>
       <% else %>
-          <%= transaction.amount %> from <%= from_name.name %> to <%= to_name.name %>
+          <%= transaction.amount %> from <%= from_user.name %> to <%= to_user.name %>
       <% end %>
   </li>
 
